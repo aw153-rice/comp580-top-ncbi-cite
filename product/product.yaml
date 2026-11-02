@@ -1,0 +1,11 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Find the most-cited PubMed paper in a date window."
+summary: "Top NCBI Cite searches PubMed with NCBI E-utilities for a query and an inclusive publication-date range, then asks NIH iCite for citation counts. It returns the PubMed ID of the paper those counts rank first."
+highlights:
+  - "Ranks every hit in the window, up to 1000 papers."
+  - "Uses iCite citation_count, and the lower PMID wins a tie."
+  - "Refuses an empty or too-broad search instead of guessing."
+steps:
+  - "Give a PubMed query and a start and end publication date."
+  - "The plugin searches PubMed and loads iCite citation counts for every hit."
+  - "It returns the PMID, the citation count, and how many papers it ranked."
