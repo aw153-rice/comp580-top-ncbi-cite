@@ -30,18 +30,18 @@ def verify_task(arguments, output, reference, workspace):
     problem = query_problem(arguments) or output_problem(output)
     if problem:
         return result(False, problem[1])
-    if reference is None:
-        return result(False, "reference is missing")
-    same = (
-        output.pmid == reference.pmid
-        and output.citation_count == reference.citation_count
-        and output.papers_considered == reference.papers_considered
-    )
-    if not same:
+    # A tool run never receives the pin. Judge that call from ranking.json.
+    if reference is not None and (
+        output.pmid != reference.pmid
+        or output.citation_count != reference.citation_count
+        or output.papers_considered != reference.papers_considered
+    ):
         return result(False, "output does not match the reference")
     kind, payload = load_papers(workspace)
     if kind != "ok":
         return result(False, payload)
     if not matches_rows(output, payload):
         return result(False, "ranking.json does not support the output")
+    if reference is None:
+        return result(True, "output matches the ranked rows")
     return result(True, "output matches the reference")
